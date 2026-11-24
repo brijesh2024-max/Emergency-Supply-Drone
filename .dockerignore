@@ -1,0 +1,12 @@
+node_modules
+.venv
+.next
+out
+data
+.qa
+.git
+vendor
+.env
+*.zip
+__pycache__
+**/__pycache__

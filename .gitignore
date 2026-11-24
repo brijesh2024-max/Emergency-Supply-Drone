@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.venv/
+data/
+__pycache__/
+*.pyc
+*.tsbuildinfo
+.env
+*.zip
+test-results/
+.qa/

@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: aeris
+      POSTGRES_DB: rescue
+      POSTGRES_PASSWORD: ${AERIS_DB_PASSWORD:?Set AERIS_DB_PASSWORD}
+    volumes:
+      - exercise_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aeris -d rescue"]
+      interval: 3s
+      timeout: 3s
+      retries: 25
+  console:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8765:8765"
+    environment:
+      DATABASE_URL: postgresql://aeris:${AERIS_DB_PASSWORD}@db:5432/rescue
+      AERIS_DEMO: "0"
+      AERIS_COORDINATOR_PASSWORD: ${AERIS_COORDINATOR_PASSWORD:?Set coordinator password}
+      AERIS_OPERATOR_PASSWORD: ${AERIS_OPERATOR_PASSWORD:?Set operator password}
+      AERIS_OBSERVER_PASSWORD: ${AERIS_OBSERVER_PASSWORD:?Set observer password}
+volumes:
+  exercise_pg: {}
